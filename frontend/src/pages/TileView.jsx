@@ -52,6 +52,7 @@ const TileView = () => {
           nodes={nodes.nodes}
           links={nodes.links}
           onNodeClick={handleNodeClick}
+          onNodePositionChange={updateNode}
           width={dimensions.width}
           height={dimensions.height}
         />

@@ -5,6 +5,7 @@ const Graph = ({
   nodes = [],
   links = [],
   onNodeClick,
+  onNodePositionChange,
   width = 800,
   height = 600,
 }) => {
@@ -42,9 +43,9 @@ const Graph = ({
           .id((d) => d.id)
           .distance(150)
       )
-      .force("charge", d3.forceManyBody().strength(-300))
+      .force("charge", d3.forceManyBody().strength(-100))
       .force("center", d3.forceCenter(width / 2, height / 2))
-      .force("collision", d3.forceCollide().radius(50));
+      .force("collision", d3.forceCollide().radius(60));
 
     // Create links
     const link = g
@@ -124,13 +125,18 @@ const Graph = ({
       if (!event.active) simulation.alphaTarget(0);
       d.fx = null;
       d.fy = null;
+      onNodePositionChange({ ...d });
     }
+
+    simulation.nodes(nodes);
+    simulation.force("link").links(links);
+    simulation.alpha(1).restart();
 
     // Clean up
     return () => {
       simulation.stop();
     };
-  }, [nodes, links, width, height, onNodeClick]);
+  }, [nodes, links, width, height, onNodeClick, onNodePositionChange]);
 
   // Empty state
   if (!nodes.length) {

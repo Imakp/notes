@@ -15,7 +15,6 @@ const AddNodeModal = ({ onClose, onAddNode, existingNodes }) => {
     if (!title) newErrors.title = "Title is required";
     if (!content) newErrors.content = "Content is required";
 
-    // Check if ID already exists
     if (existingNodes?.some((node) => node.id === nodeId)) {
       newErrors.id = "This ID already exists";
     }
@@ -32,8 +31,6 @@ const AddNodeModal = ({ onClose, onAddNode, existingNodes }) => {
         title,
         parentKey,
         content,
-        x: Math.random() * 500,
-        y: Math.random() * 500,
       };
       onAddNode(newNode);
       onClose();

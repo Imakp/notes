@@ -9,9 +9,14 @@ const GraphProvider = ({ children }) => {
       const savedData = localStorage.getItem("nodes");
       if (savedData) {
         const parsedData = JSON.parse(savedData);
+        // Ensure parsed nodes have valid x/y if present
         return {
-          nodes: Array.isArray(parsedData.nodes) ? parsedData.nodes : [],
-          links: Array.isArray(parsedData.links) ? parsedData.links : [],
+          nodes: parsedData.nodes.map((n) => ({
+            ...n,
+            x: n.x || Math.random() * 500, // Fallback for migration
+            y: n.y || Math.random() * 500,
+          })),
+          links: parsedData.links,
         };
       }
     } catch (error) {
@@ -57,8 +62,8 @@ const GraphProvider = ({ children }) => {
         );
         if (parentNode) {
           newLinks.push({
-            source: newNode.parentKey,
-            target: nodeToAdd.id,
+            source: parentNode,
+            target: nodeToAdd,
           });
         }
       }
